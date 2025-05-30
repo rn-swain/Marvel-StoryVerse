@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MarvelStory | Collaborative Superhero Storytelling</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="assets/marvel-favicon.png">
+</head>
+<body>
+  <!-- Auth Modal -->
+  <div id="authModal" class="marvel-modal">
+    <div class="modal-content marvel-card">
+      <span class="close-modal">&times;</span>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Login</button>
+        <button class="auth-tab" data-tab="register">Register</button>
+      </div>
+      
+      <form id="loginForm" class="auth-form active">
+        <div class="form-group">
+          <label for="loginUsername">Username</label>
+          <input type="text" id="loginUsername" required>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" required>
+        </div>
+        <button type="submit" class="btn btn-red">Login</button>
+        <div class="auth-footer">
+          <p>New to MarvelStory? <a href="#" class="switch-auth">Create an account</a></p>
+        </div>
+      </form>
+      
+      <form id="registerForm" class="auth-form">
+        <div class="form-group">
+          <label for="registerUsername">Username</label>
+          <input type="text" id="registerUsername" required>
+        </div>
+        <div class="form-group">
+          <label for="registerEmail">Email</label>
+          <input type="email" id="registerEmail" required>
+        </div>
+        <div class="form-group">
+          <label for="registerPassword">Password</label>
+          <input type="password" id="registerPassword" required>
+        </div>
+        <div class="form-group">
+          <label for="registerAvatar">Choose Avatar</label>
+          <div class="avatar-selection">
+            <div class="avatar-option active" data-avatar="spiderman">
+              <img src="assets/spiderman-icon.png" alt="Spider-Man">
+            </div>
+            <div class="avatar-option" data-avatar="ironman">
+              <img src="assets/ironman-icon.png" alt="Iron Man">
+            </div>
+            <div class="avatar-option" data-avatar="captainamerica">
+              <img src="assets/captain-america-icon.png" alt="Captain America">
+            </div>
+            <div class="avatar-option" data-avatar="blackpanther">
+              <img src="assets/black-panther-icon.png" alt="Black Panther">
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-red">Register</button>
+        <div class="auth-footer">
+          <p>Already have an account? <a href="#" class="switch-auth">Login here</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Marvel Header -->
+  <header class="marvel-header">
+    <div class="marvel-nav">
+      <div class="marvel-logo">
+        <img src="assets/marvel-logo.png" alt="Marvel">
+        <span>StoryVerse</span>
+      </div>
+      
+      <div class="nav-search">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search stories..." id="navSearch">
+      </div>
+      
+      <nav class="nav-links">
+        <a href="#" class="nav-link active"><i class="fas fa-home"></i> Home</a>
+        <a href="#" class="nav-link"><i class="fas fa-compass"></i> Explore</a>
+        <a href="#" class="nav-link"><i class="fas fa-bookmark"></i> Bookmarks</a>
+      </nav>
+      
+      <div class="user-controls">
+        <button id="themeToggle" class="btn-icon" aria-label="Toggle theme">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button id="authBtn" class="btn btn-outline btn-sm">Sign In</button>
+        <div class="user-avatar logged-in">
+          <img src="assets/default-avatar.png" id="userAvatar" alt="User" class="avatar-img">
+          <div class="user-menu">
+            <a href="#"><i class="fas fa-user"></i> Profile</a>
+            <a href="#"><i class="fas fa-cog"></i> Settings</a>
+            <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          </div>
+        </div>
+      </div>
+      
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-content">
+      <div class="mobile-search">
+        <input type="text" placeholder="Search stories...">
+        <i class="fas fa-search"></i>
+      </div>
+      <nav class="mobile-nav-links">
+        <a href="#" class="mobile-nav-link active"><i class="fas fa-home"></i> Home</a>
+        <a href="#" class="mobile-nav-link"><i class="fas fa-compass"></i> Explore</a>
+        <a href="#" class="mobile-nav-link"><i class="fas fa-bookmark"></i> Bookmarks</a>
+        <a href="#" class="mobile-nav-link"><i class="fas fa-user"></i> Profile</a>
+        <a href="#" class="mobile-nav-link"><i class="fas fa-cog"></i> Settings</a>
+      </nav>
+      <div class="mobile-theme-toggle">
+        <span>Dark Mode</span>
+        <label class="theme-switch">
+          <input type="checkbox" id="mobileThemeToggle">
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="marvel-main">
+    <!-- Hero Section -->
+    <section class="marvel-hero">
+      <div class="hero-content">
+        <h1 class="hero-title">Create Your <span>Marvel Story</span></h1>
+        <p class="hero-subtitle">Join forces with other fans to craft the ultimate Marvel universe stories. Collaborate, share, and explore endless possibilities.</p>
+        <div class="hero-buttons">
+          <button class="btn btn-red btn-lg" id="startWritingBtn">
+            <i class="fas fa-feather-alt"></i> Start Writing
+          </button>
+          <button class="btn btn-outline btn-lg" id="exploreBtn">
+            <i class="fas fa-compass"></i> Explore Stories
+          </button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">1,284</span>
+            <span class="stat-label">Stories</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">5,672</span>
+            <span class="stat-label">Writers</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">24,901</span>
+            <span class="stat-label">Readers</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="assets/hero-characters.png" alt="Marvel Characters" class="hero-characters">
+        <div class="comic-bubbles">
+          <div class="bubble bubble-1">POW!</div>
+          <div class="bubble bubble-2">BAM!</div>
+          <div class="bubble bubble-3">WHAM!</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Stories -->
+    <section class="featured-stories">
+      <div class="section-header">
+        <h2 class="section-title">Featured Stories</h2>
+        <a href="#" class="view-all">View All <i class="fas fa-chevron-right"></i></a>
+      </div>
+      
+      <div class="stories-carousel">
+        <button class="carousel-btn carousel-prev"><i class="fas fa-chevron-left"></i></button>
+        
+        <div class="stories-track">
+          <div class="story-card featured">
+            <div class="story-badge">Featured</div>
+            <div class="story-character">
+              <img src="assets/spiderman-icon.png" alt="Spider-Man">
+            </div>
+            <div class="story-content">
+              <h3 class="story-title">Spider-Man: The Lost Years</h3>
+              <p class="story-excerpt">After the events of the Clone Saga, Peter Parker finds himself in a strange new reality where he never married Mary Jane...</p>
+              <div class="story-meta">
+                <span class="author">By ComicFan42</span>
+                <span class="date">May 15, 2023</span>
+              </div>
+              <div class="story-stats">
+                <span class="stat"><i class="fas fa-thumbs-up"></i> 24</span>
+                <span class="stat"><i class="fas fa-comment"></i> 5</span>
+                <span class="stat"><i class="fas fa-eye"></i> 156</span>
+              </div>
+            </div>
+            <button class="btn btn-sm btn-outline story-read-btn">Read Story</button>
+          </div>
+          
+          <!-- More featured stories would be loaded here -->
+        </div>
+        
+        <button class="carousel-btn carousel-next"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <div class="content-container">
+      <!-- Stories Feed -->
+      <section class="marvel-stories">
+        <div class="stories-header">
+          <h2 class="section-title">Latest Marvel Stories</h2>
+          
+          <div class="stories-controls">
+            <div class="sort-filter">
+              <div class="dropdown">
+                <button class="dropdown-btn">
+                  <span>Sort: Newest</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-content">
+                  <a href="#" data-sort="newest">Newest</a>
+                  <a href="#" data-sort="popular">Most Popular</a>
+                  <a href="#" data-sort="discussed">Most Discussed</a>
+                  <a href="#" data-sort="views">Most Views</a>
+                </div>
+              </div>
+              
+              <div class="dropdown">
+                <button class="dropdown-btn">
+                  <span>Filter: All Heroes</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-content">
+                  <a href="#" data-filter="all">All Heroes</a>
+                  <a href="#" data-filter="spiderman">Spider-Man</a>
+                  <a href="#" data-filter="ironman">Iron Man</a>
+                  <a href="#" data-filter="captainamerica">Captain America</a>
+                  <a href="#" data-filter="blackpanther">Black Panther</a>
+                  <a href="#" data-filter="thor">Thor</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div id="storyList" class="story-grid">
+          <!-- Loading Skeleton -->
+          <div class="story-card skeleton">
+            <div class="skeleton-character"></div>
+            <div class="skeleton-content">
+              <div class="skeleton-title"></div>
+              <div class="skeleton-excerpt"></div>
+              <div class="skeleton-excerpt"></div>
+              <div class="skeleton-meta"></div>
+            </div>
+          </div>
+          
+          <!-- More stories will be loaded here -->
+        </div>
+        
+        <div class="load-more">
+          <button class="btn btn-outline" id="loadMoreBtn">
+            <i class="fas fa-plus"></i> Load More Stories
+          </button>
+        </div>
+      </section>
+      
+      <!-- Sidebar -->
+      <aside class="marvel-sidebar">
+        <!-- Writing Prompt Card -->
+        <div class="sidebar-card prompt-card">
+          <h3 class="card-title">Daily Writing Prompt</h3>
+          <div class="prompt-content">
+            <p>"What if Doctor Strange made a different choice during the events of Infinity War? How would that change the outcome?"</p>
+            <button class="btn btn-sm btn-red">Start Writing</button>
+          </div>
+        </div>
+        
+        <!-- Communities Card -->
+        <div class="sidebar-card communities-card">
+          <h3 class="card-title">Marvel Communities</h3>
+          <div class="community-list">
+            <a href="#" class="community-item">
+              <img src="assets/avengers-icon.png" alt="Avengers">
+              <div class="community-info">
+                <span class="community-name">Avengers Assembled</span>
+                <span class="community-members">25.7k members</span>
+              </div>
+              <i class="fas fa-chevron-right"></i>
+            </a>
+            
+            <a href="#" class="community-item">
+              <img src="assets/xmen-icon.png" alt="X-Men">
+              <div class="community-info">
+                <span class="community-name">X-Men Fan Club</span>
+                <span class="community-members">18.3k members</span>
+              </div>
+              <i class="fas fa-chevron-right"></i>
+            </a>
+            
+            <a href="#" class="community-item">
+              <img src="assets/gotg-icon.png" alt="Guardians">
+              <div class="community-info">
+                <span class="community-name">Guardians Crew</span>
+                <span class="community-members">12.1k members</span>
+              </div>
+              <i class="fas fa-chevron-right"></i>
+            </a>
+          </div>
+          <button class="btn btn-sm btn-outline btn-block">
+            <i class="fas fa-plus"></i> Create Community
+          </button>
+        </div>
+        
+        <!-- Events Card -->
+        <div class="sidebar-card events-card">
+          <h3 class="card-title">Upcoming Events</h3>
+          <div class="event-list">
+            <div class="event-item">
+              <div class="event-date">
+                <span class="day">15</span>
+                <span class="month">JUN</span>
+              </div>
+              <div class="event-details">
+                <h4 class="event-title">Marvel Writing Contest</h4>
+                <p class="event-desc">Create the best Spider-Man story</p>
+                <button class="btn btn-xs btn-outline">Join Event</button>
+              </div>
+            </div>
+            
+            <div class="event-item">
+              <div class="event-date">
+                <span class="day">28</span>
+                <span class="month">JUN</span>
+              </div>
+              <div class="event-details">
+                <h4 class="event-title">MCU Timeline Discussion</h4>
+                <p class="event-desc">Debate the best movie order</p>
+                <button class="btn btn-xs btn-outline">Join Event</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+    
+    <!-- Story Creation Panel -->
+    <section class="story-creation-panel" id="storyCreationPanel">
+      <div class="panel-header">
+        <h2><i class="fas fa-feather-alt"></i> Craft Your Story</h2>
+        <div class="panel-actions">
+          <button class="btn btn-sm btn-outline" id="saveDraftBtn">
+            <i class="fas fa-save"></i> Save Draft
+          </button>
+          <button class="btn-icon close-panel" id="closePanelBtn">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      
+      <form id="storyForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="title">Story Title</label>
+            <input type="text" id="title" placeholder="e.g. Avengers: The New Threat" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="series">Part of a Series (Optional)</label>
+            <select id="series">
+              <option value="">None</option>
+              <option value="series1">Avengers Saga</option>
+              <option value="series2">Spider-Verse Chronicles</option>
+              <option value="series3">X-Men Legacy</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="character">Main Character</label>
+            <select id="character" required>
+              <option value="">Select Hero</option>
+              <option value="spiderman">Spider-Man</option>
+              <option value="ironman">Iron Man</option>
+              <option value="captainamerica">Captain America</option>
+              <option value="blackpanther">Black Panther</option>
+              <option value="thor">Thor</option>
+              <option value="hulk">Hulk</option>
+              <option value="blackwidow">Black Widow</option>
+              <option value="doctorstrange">Doctor Strange</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="era">Era</label>
+            <select id="era">
+              <option value="modern">Modern</option>
+              <option value="1970s">1970s</option>
+              <option value="1980s">1980s</option>
+              <option value="1990s">1990s</option>
+              <option value="alternate">Alternate Universe</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="chapter">Chapter Number</label>
+            <input type="number" id="chapter" min="1" value="1">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="tags">Tags (Comma separated)</label>
+          <input type="text" id="tags" placeholder="e.g. Avengers, Infinity War, Time Travel">
+        </div>
+        
+        <div class="form-group">
+          <label for="content">Your Story</label>
+          <div class="editor-toolbar">
+            <button type="button" class="toolbar-btn" data-command="bold"><i class="fas fa-bold"></i></button>
+            <button type="button" class="toolbar-btn" data-command="italic"><i class="fas fa-italic"></i></button>
+            <button type="button" class="toolbar-btn" data-command="heading"><i class="fas fa-heading"></i></button>
+            <button type="button" class="toolbar-btn" data-command="quote"><i class="fas fa-quote-right"></i></button>
+            <button type="button" class="toolbar-btn" data-command="link"><i class="fas fa-link"></i></button>
+            <button type="button" class="toolbar-btn" data-command="image"><i class="fas fa-image"></i></button>
+          </div>
+          <textarea id="content" placeholder="Begin your Marvel story here..." required></textarea>
+          <div class="editor-footer">
+            <div class="word-count">0/10,000 words</div>
+            <div class="character-count">0 characters</div>
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn btn-red">
+            <i class="fas fa-paper-plane"></i> Publish Story
+          </button>
+          <button type="button" class="btn btn-outline" id="previewBtn">
+            <i class="fas fa-eye"></i> Preview
+          </button>
+        </div>
+      </form>
+    </section>
+    
+    <!-- Story Preview Modal -->
+    <div class="preview-modal" id="previewModal">
+      <div class="preview-content">
+        <button class="close-preview"><i class="fas fa-times"></i></button>
+        <div class="preview-header">
+          <h2 id="previewTitle">Story Preview</h2>
+          <div class="preview-meta">
+            <span id="previewAuthor">By Author</span>
+            <span id="previewDate">Today</span>
+          </div>
+        </div>
+        <div class="preview-body" id="previewBody">
+          <!-- Preview content will be inserted here -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Story Modal -->
+  <div id="storyModal" class="marvel-modal">
+    <div class="modal-content marvel-card">
+      <span class="close-modal">&times;</span>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- User Profile Modal -->
+  <div id="profileModal" class="marvel-modal">
+    <div class="modal-content marvel-card profile-modal">
+      <span class="close-modal">&times;</span>
+      <div class="profile-header">
+        <div class="profile-avatar">
+          <img src="assets/default-avatar.png" id="profileAvatar" alt="Profile">
+          <button class="btn-edit"><i class="fas fa-camera"></i></button>
+        </div>
+        <div class="profile-info">
+          <h2 id="profileUsername">MarvelFan123</h2>
+          <p class="join-date">Member since June 2023</p>
+          <div class="profile-stats">
+            <div class="stat">
+              <span class="number">42</span>
+              <span class="label">Stories</span>
+            </div>
+            <div class="stat">
+              <span class="number">1.2k</span>
+              <span class="label">Upvotes</span>
+            </div>
+            <div class="stat">
+              <span class="number">356</span>
+              <span class="label">Comments</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="profile-content">
+        <div class="profile-tabs">
+          <button class="tab-btn active" data-tab="stories">My Stories</button>
+          <button class="tab-btn" data-tab="bookmarks">Bookmarks</button>
+          <button class="tab-btn" data-tab="notifications">Notifications</button>
+          <button class="tab-btn" data-tab="drafts">Drafts</button>
+        </div>
+        <div class="tab-content" id="storiesTab">
+          <!-- User stories will be loaded here -->
+        </div>
+        <div class="tab-content hidden" id="bookmarksTab">
+          <!-- Bookmarks will be loaded here -->
+        </div>
+        <div class="tab-content hidden" id="notificationsTab">
+          <!-- Notifications will be loaded here -->
+        </div>
+        <div class="tab-content hidden" id="draftsTab">
+          <!-- Drafts will be loaded here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Marvel Footer -->
+  <footer class="marvel-footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img src="assets/marvel-logo.png" alt="Marvel">
+        <span>StoryVerse</span>
+      </div>
+      
+      <div class="footer-grid">
+        <div class="footer-section">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="#">Popular Stories</a></li>
+            <li><a href="#">New Releases</a></li>
+            <li><a href="#">Featured Authors</a></li>
+            <li><a href="#">Writing Challenges</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Community</h4>
+          <ul>
+            <li><a href="#">Forums</a></li>
+            <li><a href="#">Discord</a></li>
+            <li><a href="#">Events</a></li>
+            <li><a href="#">Fan Art</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#">Writing Tips</a></li>
+            <li><a href="#">Character Guides</a></li>
+            <li><a href="#">Timeline References</a></li>
+            <li><a href="#">API for Developers</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-social">
+        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-discord"></i></a>
+        <a href="#" class="social-icon"><i class="fab fa-reddit"></i></a>
+      </div>
+      
+      <div class="footer-disclaimer">
+        <p>This is a fan-made platform. All Marvel characters and related elements are © Marvel Entertainment.</p>
+        <p>MarvelStory is not affiliated with Marvel Comics or The Walt Disney Company.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toasts Container -->
+  <div id="toastContainer"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
